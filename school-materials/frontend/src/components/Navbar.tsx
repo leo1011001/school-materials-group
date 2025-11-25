@@ -22,12 +22,11 @@ const Navbar: React.FC = () => {
           <div className="nav-links">
             {user ? (
               <>
-                <span>Welcome, {user.username}</span>
+                <span>Welcome, {user.username} ({user.role})</span>
                 <Link to="/dashboard">Dashboard</Link>
-                <Link to="/requests">Requests</Link>
-                {user.role === 'admin' && (
-                  <Link to="/requests/create">Create Request</Link>
-                )}
+                <Link to="/requests">My Requests</Link>
+                {/* ALL USERS can create requests */}
+                <Link to="/requests/create">Create Request</Link>
                 <button 
                   onClick={handleLogout}
                   className="btn btn-danger"

@@ -5,6 +5,7 @@ import auth from '../middleware/auth.js';
 const router = express.Router();
 
 // Get all requests (admin sees all, users see only their own)
+// Non-admin users will only receive requests they created
 router.get('/', auth, async (req, res) => {
   try {
     let query = {};
@@ -22,7 +23,7 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
-// Create new request
+// Create new request - ALL authenticated users can create requests
 router.post('/', auth, async (req, res) => {
   try {
     const { description, materials } = req.body;

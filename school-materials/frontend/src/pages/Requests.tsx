@@ -17,6 +17,7 @@ interface Request {
   materials: Material[];
   status: 'pending' | 'approved' | 'rejected' | 'completed';
   createdBy: {
+    _id?: string;
     username: string;
     email: string;
   };
@@ -71,12 +72,13 @@ const Requests: React.FC = () => {
   return (
     <div style={{ margin: '2rem 0' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-        <h1>Material Requests</h1>
-        {user?.role === 'admin' && (
-          <Link to="/requests/create" className="btn btn-primary">
-            Create New Request
-          </Link>
-        )}
+        <h1>
+          {user?.role === 'admin' ? 'All Material Requests' : 'My Material Requests'}
+        </h1>
+        {/* ALL USERS can create requests */}
+        <Link to="/requests/create" className="btn btn-primary">
+          Create New Request
+        </Link>
       </div>
 
       {requests.length === 0 ? (
@@ -99,7 +101,7 @@ const Requests: React.FC = () => {
             </thead>
             <tbody>
               {requests.map((request) => (
-                <tr key={request._id}>
+                  <tr key={request._id}>
                   <td>{request.requestNumber}</td>
                   <td>{new Date(request.date).toLocaleDateString()}</td>
                   <td>{request.description}</td>
@@ -116,20 +118,23 @@ const Requests: React.FC = () => {
                     </span>
                   </td>
                   <td>{request.createdBy?.username}</td>
-                  {user?.role === 'admin' && (
+                  {(user?.role === 'admin' || request.createdBy?._id === user?.id) && (
                     <td>
                       <div style={{ display: 'flex', gap: '0.5rem' }}>
-                        <select
-                          value={request.status}
-                          onChange={(e) => updateStatus(request._id, e.target.value)}
-                          className="form-control"
-                          style={{ width: 'auto' }}
-                        >
-                          <option value="pending">Pending</option>
-                          <option value="approved">Approved</option>
-                          <option value="rejected">Rejected</option>
-                          <option value="completed">Completed</option>
-                        </select>
+                        {user?.role === 'admin' && (
+                          <select
+                            value={request.status}
+                            onChange={(e) => updateStatus(request._id, e.target.value)}
+                            className="form-control"
+                            style={{ width: 'auto' }}
+                          >
+                            <option value="pending">Pending</option>
+                            <option value="approved">Approved</option>
+                            <option value="rejected">Rejected</option>
+                            <option value="completed">Completed</option>
+                          </select>
+                        )}
+                        {/* Allow owners (and admins) to delete */}
                         <button
                           onClick={() => deleteRequest(request._id)}
                           className="btn btn-danger"
