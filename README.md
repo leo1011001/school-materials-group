@@ -23,3 +23,11 @@ From there the given request has the following statuses, initially "pending" the
 test_user credentials...
 - email: leonstanev12@gmail.com
 - password: 1234567890
+
+throwback from line 14, the code you need to run if you do at this current stage where it is allowed need to connect locally to the DB, put the following code in...
+{
+MONGODB_URI=mongodb+srv://schoolmaterialsadmin:b51c6UNnvXszsq3T@cluster0.q0pdxqb.mongodb.net/school-materials?retryWrites=true&w=majority
+JWT_SECRET=sk_proj_7x9A2b4C6d8E0fG2h4J6k8L0mN2pQ4rS6tU8vW0yZ1aB3cD5eF7gH9jK1lM3nO5pQ7rS9tU
+PORT=5000
+NODE_ENV=development
+}
