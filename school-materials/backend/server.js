@@ -8,6 +8,8 @@ import userRoutes from './routes/users.js';
 
 dotenv.config();
 
+console.log('MONGODB_URI:', process.env.MONGODB_URI);
+
 const app = express();
 
 app.use(cors());
